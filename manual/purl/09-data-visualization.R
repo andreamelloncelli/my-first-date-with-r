@@ -28,8 +28,7 @@ ggplot(people, aes(x = Weight, y = Height, colour = Area)) +
     strip.text = element_text(colour = "black", face = "bold.italic", size = 12),
     plot.title = element_text(colour = "black", size = 20, face = "bold.italic", hjust = 0.5),
     panel.spacing = unit(1, "lines"),
-    legend.position="none"
-)
+    legend.position="none")
 
 ## ----data_1, eval=FALSE--------------------------------------------------
 ## # people dataset
@@ -92,8 +91,7 @@ ggplot(people, aes(x = Weight, y = Height, colour = Area)) +
     strip.text = element_text(colour = "black", face = "bold.italic", size = 12), # customize facet labels
     plot.title = element_text(colour = "black", size = 20, face = "bold.italic", hjust = 0.5), # customize plot title
     panel.spacing = unit(1, "lines"), # customize panels spacing
-    legend.position = "none" # remove the legend
-)
+    legend.position = "none") # remove the legend
 
 ## ----barplot-------------------------------------------------------------
 # base plot: key building blocks (data, aes, layer)
