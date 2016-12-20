@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "## ----drug, message=FALSE-------------------------------------------------\nrequire(qdata)\ndata(drug)\nstr(drug)\n\n## ----drugplot, message=FALSE---------------------------------------------\nrequire(ggplot2)\npl <- ggplot(data = drug, mapping = aes(x = dose, y=time)) + \n  geom_point() +\n  xlab(label = \"Dose (mg)\") +\n  ylab(label = \"Reaction Time (secs)\")\n\npl\n\n## ----reg-----------------------------------------------------------------\npl + geom_smooth(method=\"lm\", se=FALSE) \n\n## ----lm------------------------------------------------------------------\nfm <- lm(formula = time ~ dose, data = drug)\n\n## ----summary.lm----------------------------------------------------------\nsummary(fm)\n\n## ----fm_list-------------------------------------------------------------\n# regression coefficients\ncoef(fm)\n# residuals\nresid(fm)\n# fitted values\nfitted(fm)\n\n## ----predict-------------------------------------------------------------\nnewdata <- data.frame(dose = c(0.2, 0.4, 0.6 ))\npredict (fm, newdata = newdata)\n\n## ----lmplot, fig.height=7------------------------------------------------\npar(mfrow = c(2,2))\nplot(fm)\n\n",
+    "created" : 1481550393257.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1863569059",
+    "id" : "99420AA9",
+    "lastKnownWriteTime" : 1481549764,
+    "last_content_update" : 1481549764,
+    "path" : "~/Desktop/my-first-date-with-r-master/manual/purl/10-statistical-models.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

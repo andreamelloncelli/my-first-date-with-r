@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "## ----require_nnet, message=FALSE-----------------------------------------\nrequire(nnet)\n\n## ----load_data, message=FALSE--------------------------------------------\nrequire(qdata)\ndata(titanic)\nhead(titanic)\n\n## ----table_status, message=FALSE-----------------------------------------\nrequire(dplyr)\n# frequency table of the counts and percentage of Died and Survived people \ntitanic %>% \n  group_by(Status) %>%\n  summarise(n = n()) %>%\n  mutate(freq = paste(round(n/sum(n)* 100, 2), \"%\")) \n\n## ----table_status_class--------------------------------------------------\n# frequency table of the counts and percentage of Died and Survived people by Class\ntitanic %>% \n  group_by(Status, Class) %>%\n  summarise(n = n()) %>%\n  mutate(freq = paste(round(n/sum(n)* 100, 2), \"%\"))\n\n## ----table_status_gender-------------------------------------------------\n# frequency table of the counts and percentage of Died and Survived people by Gender\ntitanic %>% \n  group_by(Status, Gender) %>%\n  summarise(n= n()) %>%\n  mutate(freq = paste(round(n/sum(n)* 100, 2), \"%\"))\n\n## ----plot_status_age, message=FALSE--------------------------------------\nrequire(ggplot2)\nggplot(data=titanic, mapping=aes(x=Status, y=Age)) +\n  geom_boxplot(fill=\"#74a9cf\", colour=\"#034e7b\")+ \n  ggtitle(\"Box-plot of Age within levels of Status\")\n\n## ----train_test_samples--------------------------------------------------\n# generate train and test sample \ntrain <- titanic %>% sample_frac(0.7)\ntest <- titanic %>% slice(-as.numeric(rownames(train)))\n\n## ----nn_mod_estimate-----------------------------------------------------\nnn_mod <- nnet(Status ~ Class + Gender + Age, data = train, size = 3)\n\n## ----nn_mod_predictions--------------------------------------------------\npr <- predict(object = nn_mod, newdata = test)\nhead(pr)\n\n## ----nn_mod_predictions_class--------------------------------------------\ntest <- test %>% mutate(pr_mod = pr < .5)\n\n## ----performance_table---------------------------------------------------\ntest %>% \n  group_by(Status, pr_mod) %>%\n  summarise(n = n()) %>%\n  mutate(freq = paste(round(n/sum(n)* 100, 2), \"%\"))\n\n",
+    "created" : 1481550430195.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3363353653",
+    "id" : "95659CE",
+    "lastKnownWriteTime" : 1481549764,
+    "last_content_update" : 1481549764,
+    "path" : "~/Desktop/my-first-date-with-r-master/manual/purl/11-data-mining.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
