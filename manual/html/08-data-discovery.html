@@ -323,7 +323,7 @@ $(document).ready(function () {
   <li><a href="09-data-visualization.html">Data Visualization</a></li>
   <li><a href="10-statistical-models.html">Statistical Models</a></li>
   <li><a href="11-data-mining.html">Data Mining</a></li>
-  <li class="nav-header"></li>
+  <li><a href="12-rmarkdown.html">Reports with R Markdown</a></li>
 </ul>
     </div>  
   </div>
@@ -390,18 +390,19 @@ bank %&gt;% summarise(max_balance = max(balance, na.rm = TRUE), min_balance = mi
 ##   max_balance min_balance
 ##         &lt;int&gt;       &lt;int&gt;
 ## 1      102127       -8019</code></pre>
-<pre class="r"><code># Compute the summary (minimum, first quartile, median, mean, third quartile, maximum and standard deviation) of balance of the accounts  
-bank %&gt;% summarise(min=min(balance, na.rm = TRUE),
+<pre class="r"><code># Compute the summary (number of obs, minimum, first quartile, median, mean, third quartile, maximum and standard deviation) of balance of the accounts  
+bank %&gt;% summarise(n_obs = n(),
+              min=min(balance, na.rm = TRUE),
               first_q=quantile(balance, prob = 0.25, na.rm = TRUE),
               median=median(balance, na.rm = TRUE),
               mean=mean(balance, na.rm =TRUE),
               third_q=quantile(balance, prob = 0.75, na.rm = TRUE),
               max=max(balance, na.rm = TRUE),
               sd=sd(balance, na.rm =TRUE))</code></pre>
-<pre><code>## # A tibble: 1 × 7
-##     min first_q median     mean third_q    max       sd
-##   &lt;int&gt;   &lt;dbl&gt;  &lt;int&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;int&gt;    &lt;dbl&gt;
-## 1 -8019      72    448 1362.272    1428 102127 3044.766</code></pre>
+<pre><code>## # A tibble: 1 × 8
+##   n_obs   min first_q median     mean third_q    max       sd
+##   &lt;int&gt; &lt;int&gt;   &lt;dbl&gt;  &lt;int&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;int&gt;    &lt;dbl&gt;
+## 1 45211 -8019      72    448 1362.272    1428 102127 3044.766</code></pre>
 <p>Descriptive statistics can be computed also by groups, by using <code>group_by()</code>, which is a <code>dplyr</code> function that allows us to group observations according to the levels of a variable/s.</p>
 <pre class="r"><code># Compute the mean of balance of the accounts by job
 bank %&gt;% 
@@ -422,56 +423,59 @@ bank %&gt;%
 ## 10    technician    1252.6321
 ## 11    unemployed    1521.7460
 ## 12       unknown    1772.3576</code></pre>
-<pre class="r"><code># Compute the summary (minimum, first quartile, median, mean, third quantile, maximum and standard deviation) of balance of the accounts by job 
+<pre class="r"><code># Compute the summary (number of obs, minimum, first quartile, median, mean, third quantile, maximum and standard deviation) of balance of the accounts by job 
 bank %&gt;% 
   group_by(job) %&gt;%
-  summarise(min=min(balance, na.rm = TRUE),
-              first_q=quantile(balance, prob = 0.25, na.rm = TRUE),
-              median=median(balance, na.rm = TRUE),
-              mean=mean(balance, na.rm =TRUE),
-              third_q=quantile(balance, prob = 0.75, na.rm = TRUE),
-              max=max(balance, na.rm = TRUE),
-              sd=sd(balance, na.rm =TRUE))</code></pre>
-<pre><code>## # A tibble: 12 × 8
-##              job   min first_q median      mean third_q    max       sd
-##           &lt;fctr&gt; &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;int&gt;    &lt;dbl&gt;
-## 1         admin. -1601   63.00  396.0 1135.8389 1203.00  64343 2641.963
-## 2    blue-collar -8019   55.00  388.0 1078.8267 1203.00  66653 2240.523
-## 3   entrepreneur -2082   44.50  352.0 1521.4701 1341.00  59649 4153.443
-## 4      housemaid -1941   57.75  406.0 1392.3952 1382.75  45141 2984.692
-## 5     management -6847   98.00  572.0 1763.6168 1825.00 102127 3822.966
-## 6        retired -1598  164.50  787.0 1984.2151 2309.00  81204 4397.044
-## 7  self-employed -3313  120.00  526.0 1647.9709 1603.50  52587 3684.260
-## 8       services -2122   35.00  339.5  997.0881 1071.75  57435 2164.494
-## 9        student  -679  148.25  502.0 1388.0608 1579.75  24025 2441.704
-## 10    technician -2827   61.00  421.0 1252.6321 1327.00  45248 2548.544
-## 11    unemployed -1270   94.00  529.0 1521.7460 1603.50  44134 3144.667
-## 12       unknown  -295  170.75  677.0 1772.3576 2165.50  19706 2970.289</code></pre>
+  summarise(n_obs = n(),
+            min=min(balance, na.rm = TRUE),
+            first_q=quantile(balance, prob = 0.25, na.rm = TRUE),
+            median=median(balance, na.rm = TRUE),
+            mean=mean(balance, na.rm =TRUE),
+            third_q=quantile(balance, prob = 0.75, na.rm = TRUE),
+            max=max(balance, na.rm = TRUE),
+            sd=sd(balance, na.rm =TRUE))</code></pre>
+<pre><code>## # A tibble: 12 × 9
+##              job n_obs   min first_q median      mean third_q    max
+##           &lt;fctr&gt; &lt;int&gt; &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;int&gt;
+## 1         admin.  5171 -1601   63.00  396.0 1135.8389 1203.00  64343
+## 2    blue-collar  9732 -8019   55.00  388.0 1078.8267 1203.00  66653
+## 3   entrepreneur  1487 -2082   44.50  352.0 1521.4701 1341.00  59649
+## 4      housemaid  1240 -1941   57.75  406.0 1392.3952 1382.75  45141
+## 5     management  9458 -6847   98.00  572.0 1763.6168 1825.00 102127
+## 6        retired  2264 -1598  164.50  787.0 1984.2151 2309.00  81204
+## 7  self-employed  1579 -3313  120.00  526.0 1647.9709 1603.50  52587
+## 8       services  4154 -2122   35.00  339.5  997.0881 1071.75  57435
+## 9        student   938  -679  148.25  502.0 1388.0608 1579.75  24025
+## 10    technician  7597 -2827   61.00  421.0 1252.6321 1327.00  45248
+## 11    unemployed  1303 -1270   94.00  529.0 1521.7460 1603.50  44134
+## 12       unknown   288  -295  170.75  677.0 1772.3576 2165.50  19706
+## # ... with 1 more variables: sd &lt;dbl&gt;</code></pre>
 </div>
 <div id="multiple-operations" class="section level2">
 <h2>Multiple operations</h2>
 <p>You can also chain together multiple operations to achieve a complex result. Let us have a look!</p>
-<pre class="r"><code># Compute the mean of balance of the accounts by job for people not older than 40 years and sort the result in ascending order  
+<pre class="r"><code># Compute the mean of balance of the accounts and the number of obs by job for people not older than 40 years and sort the result in ascending order  
 bank %&gt;%
-  group_by(job) %&gt;%
   filter(age &lt; 40) %&gt;%
-  summarise(mean_balance = mean(balance, na.rm = TRUE)) %&gt;%
+  group_by(job) %&gt;%
+  summarise(n_obs =n(),
+            mean_balance = mean(balance, na.rm = TRUE)) %&gt;%
   arrange(mean_balance)</code></pre>
-<pre><code>## # A tibble: 12 × 2
-##              job mean_balance
-##           &lt;fctr&gt;        &lt;dbl&gt;
-## 1        retired     445.8800
-## 2       services     827.6701
-## 3         admin.     936.2401
-## 4    blue-collar     951.9682
-## 5   entrepreneur    1153.1453
-## 6     technician    1198.5599
-## 7      housemaid    1346.0992
-## 8     unemployed    1355.1886
-## 9  self-employed    1379.8793
-## 10       student    1385.0801
-## 11    management    1548.9508
-## 12       unknown    1777.5882</code></pre>
+<pre><code>## # A tibble: 12 × 3
+##              job n_obs mean_balance
+##           &lt;fctr&gt; &lt;int&gt;        &lt;dbl&gt;
+## 1        retired    25     445.8800
+## 2       services  2419     827.6701
+## 3         admin.  2924     936.2401
+## 4    blue-collar  5064     951.9682
+## 5   entrepreneur   647    1153.1453
+## 6     technician  4376    1198.5599
+## 7      housemaid   363    1346.0992
+## 8     unemployed   631    1355.1886
+## 9  self-employed   820    1379.8793
+## 10       student   924    1385.0801
+## 11    management  5101    1548.9508
+## 12       unknown    68    1777.5882</code></pre>
 </div>
 
 

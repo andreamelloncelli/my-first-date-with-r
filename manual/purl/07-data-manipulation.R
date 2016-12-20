@@ -59,3 +59,31 @@ bank %>% arrange(desc(balance))
 # Order `bank` data frame by age of the client and by the balance of the account in descending order
 bank %>% arrange(age, desc(balance))
 
+## ----mutate--------------------------------------------------------------
+# generate a variable indicating the total number of times each person has been contacted 
+# during this campaign and during the previous ones 
+mutate(bank, contacts_n = campaign + previous)
+
+## ----mutate_col_just_created---------------------------------------------
+# generate two variable: one indicating the year of birth and one the year of birth without century 
+bank %>% mutate(year_of_birth = year - age, year_of_birth_no_century = year_of_birth - 1900)
+
+## ------------------------------------------------------------------------
+df1 <- data.frame(id = 1:4, x1 = letters[1:4])
+df1
+df2 <- data.frame(id = 3:5, x2 = letters[3:5])
+df2
+
+## ------------------------------------------------------------------------
+inner_join(df1, df2)
+
+## ------------------------------------------------------------------------
+left_join(df1, df2)
+
+## ------------------------------------------------------------------------
+right_join(df1, df2)
+left_join(df2, df1)
+
+## ------------------------------------------------------------------------
+full_join(df1, df2)
+
